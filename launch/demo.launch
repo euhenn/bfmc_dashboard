@@ -1,4 +1,4 @@
 <launch>
-  <node name="dashboard_gui_node" pkg="dashboard_package" type="dashboard_gui_node" output="screen"/>
-  <node name="talker" pkg="template_gui_package" type="talker" output="screen"/>
+  <node name="dashboard_node" pkg="bfmc_dashboard" type="dashboard_node" output="screen"/>
+  <node name="camera_publisher" pkg="bfmc_dashboard" type="camera_publisher" output="screen"/>
 </launch>
