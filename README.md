@@ -31,12 +31,12 @@ cd ~/catkin_ws
 catkin_make
 ```
 ## 4. Run the launch file
-Open a master node in a terminal and in the other run the launch file
+Open a master node
 ```bash
 roscore
 ```
+Launch the example in another terminal
 ```bash
-cd ~/catkin_ws
 roslaunch bfmc_dashboard camera_with_gui.launch
 ```
 
