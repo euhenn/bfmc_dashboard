@@ -1,4 +1,4 @@
-#bfmc_dashboard
+# bfmc_dashboard
 
 #### 1.a Create the ros workspace if you don t have it already, and build
 mkdir ~/catkin_ws
