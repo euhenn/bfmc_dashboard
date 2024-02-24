@@ -42,3 +42,20 @@ roslaunch bfmc_dashboard camera_with_gui.launch
 
 Check the files and project in the Qt IDE. "Open project" and select the folder of your workspace (catkin_ws in our case) the header file .h with the .ui file are separated from the implementation file .cpp into 2 folders to maintain the ros logic.
 
+
+### Cheat sheet :)
+granting read and write permissions
+```bash
+sudo chmod 666 /dev/ttyUSB0
+```
+node that listens on the serial
+```bash
+rosrun rosserial_python serial_node.py /dev/ttyUSB0
+```
+ros stuff
+```bash
+rosrun rqt_topic rqt_topic
+rosrun rqt_graph rqt_graph
+rostopic pub toggle_led std_msgs/Empty --once
+```
+
