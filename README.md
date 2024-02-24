@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## bfmc_dashboard package
 
 ### 1.a Create the ros workspace if you don t have it already, and build
@@ -17,3 +18,6 @@ catkin_make
 cd ~/catkin_ws
 roscore
 roslaunch bfmc_dashboard camera_with_gui.launch
+=======
+# bfmc_dashboard
+>>>>>>> 5e7fb4dfaaff385022806a3cfde494ab7347c562
