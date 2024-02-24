@@ -1,8 +1,8 @@
 # bfmc_dashboard
 
-<div style="text-align:center">
-![dashboard_gui](https://github.com/euhenn/bfmc_dashboard/blob/main/images/duck.png)
-</div>
+<p align="center">
+  <img src="https://github.com/euhenn/bfmc_dashboard/blob/main/images/duck.png?raw=true" alt="dashboard_gui"/>
+</p>
 
 ## 1. Setting up ROS workspace
 ### 1.a Create the ros workspace if you don t have it already, and build
