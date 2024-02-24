@@ -1,6 +1,6 @@
 # bfmc_dashboard
 
-
+![dashboard_gui](https://github.com/euhenn/bfmc_dashboard/blob/main/images/duck.png)
 
 
 ## 1. Setting up ROS workspace
