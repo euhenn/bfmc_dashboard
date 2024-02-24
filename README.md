@@ -21,5 +21,4 @@ cd ~/catkin_ws
 roscore
 roslaunch bfmc_dashboard camera_with_gui.launch
 
-#### Check the files and project in the Qt IDE. "Open project" and select the folder of your workspace (catkin_ws in our case)
-#### the header file .h with the .ui file are separated from the implementation file .cpp into 2 folders to maintain the ros logic
+#### Check the files and project in the Qt IDE. "Open project" and select the folder of your workspace (catkin_ws in our case) the header file .h with the .ui file are separated from the implementation file .cpp into 2 folders to maintain the ros logic
