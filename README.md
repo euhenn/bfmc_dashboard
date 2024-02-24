@@ -1,9 +1,5 @@
 # bfmc_dashboard
 
-<p align="center">
-  <img src="https://github.com/euhenn/bfmc_dashboard/blob/main/images/duck.png?raw=true" alt="dashboard_gui"/>
-</p>
-
 ## 1. Setting up ROS workspace
 ### 1.a Create the ros workspace if you don t have it already, and build
 ```bash
@@ -44,6 +40,9 @@ Launch the example in another terminal
 roslaunch bfmc_dashboard camera_with_gui.launch
 ```
 
+<p align="center">
+  <img src="https://github.com/euhenn/bfmc_dashboard/blob/main/images/duck.png?raw=true" alt="dashboard_gui"/>
+</p>
 
 ## Additional info
 Check the files and project in the Qt IDE. "Open project" and select the folder of your workspace (catkin_ws in our case) the header file .h with the .ui file are separated from the implementation file .cpp into 2 folders to maintain the ros logic.
