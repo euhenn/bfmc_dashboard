@@ -1,6 +1,6 @@
 # bfmc_dashboard
 
-## Setting up ROS workspace
+## 1 Setting up ROS workspace
 ### 1.a Create the ros workspace if you don t have it already, and build
 ```bash
 mkdir ~/catkin_ws
@@ -17,7 +17,8 @@ source /opt/ros/noetic/setup.bash
 source ~/catkin_ws/devel/setup.bash
 ```
 
-## 2. Install [ROS Qt plug-in](https://ros-qtc-plugin.readthedocs.io/en/latest/_source/How-to-Install-Users.html). Go with the Bionic online installer (works with noetic on Ubuntu 20.04)
+## 2. Install [ROS Qt plug-in](https://ros-qtc-plugin.readthedocs.io/en/latest/_source/How-to-Install-Users.html)
+Go with the Bionic online installer, as this one works with noetic on Ubuntu 20.04 also.
 
 ## 3. Git clone into src folder and build
 ```bash
