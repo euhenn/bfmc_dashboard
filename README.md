@@ -62,5 +62,6 @@ ros stuff
 rosrun rqt_topic rqt_topic
 rosrun rqt_graph rqt_graph
 rostopic pub toggle_led std_msgs/Empty --once
+export ROS_MASTER_URI=http://192.168.232.104:11311
 ```
 

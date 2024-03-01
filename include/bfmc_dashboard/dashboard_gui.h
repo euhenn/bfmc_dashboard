@@ -41,6 +41,10 @@ private slots:
 
   void on_led_button_clicked();
 
+  void on_stopbutton_clicked();
+
+  void on_startbutton_clicked();
+
 private:
   Ui::DashboardGui *ui;
   QTimer *ros_timer;
@@ -51,6 +55,7 @@ private:
   ros::Subscriber humidity_sub_;
   ros::Publisher hello_pub_;
   ros::Publisher  led_pub_;
+  ros::Publisher  our_pub_;
 
   image_transport::ImageTransport it;
   image_transport::Subscriber image_sub;

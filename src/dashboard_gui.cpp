@@ -2,6 +2,7 @@
 #include "ui_dashboard_gui.h"
 
 
+
 DashboardGui::DashboardGui(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::DashboardGui),
@@ -28,6 +29,7 @@ DashboardGui::DashboardGui(QWidget *parent) :
   nh_->param<std::string>("hello_topic",hello_topic,"chatter");
   hello_pub_ = nh_->advertise<std_msgs::String>(hello_topic,1);
 
+
   // subscriber to image
   image_sub = it.subscribe("/camera_image", 1, &DashboardGui::updateImage, this);
 
@@ -36,12 +38,16 @@ DashboardGui::DashboardGui(QWidget *parent) :
   led_pub_ = nh_->advertise<std_msgs::Empty>(led_topic, 1);
 
   std::string temp_topic;
-  nh_->param<std::string>("temp_topic",temp_topic,"/temperature");
+  nh_->param<std::string>("temp_topic",temp_topic,"/automobile/sonar/ahead/center");
   temp_sub_ = nh_->subscribe<std_msgs::Float32>(temp_topic, 1, &DashboardGui::temperatureCallback, this);
 
   std::string humidity_topic;
   nh_->param<std::string>("humidity_topic",humidity_topic,"/humidity");
   humidity_sub_ = nh_->subscribe<std_msgs::Float32>(humidity_topic, 1, &DashboardGui::humidityCallback, this);
+
+  std::string our_test;
+  nh_->param<std::string>("our_test", our_test, "/topic_chatter");
+  our_pub_ = nh_->advertise<std_msgs::String>(our_test, 1);
 }
 
 DashboardGui::~DashboardGui()
@@ -130,4 +136,22 @@ void DashboardGui::on_led_button_clicked()
 {
   std_msgs::Empty msg; // Create an empty message of type std_msgs::Empty
   led_pub_.publish(msg);
+}
+
+void DashboardGui::on_stopbutton_clicked()
+{
+  std_msgs::String msg;
+  std::stringstream ss;
+  ss << "STOP";
+  msg.data = ss.str();
+
+  our_pub_.publish(msg);
+}
+
+void DashboardGui::on_startbutton_clicked()
+{
+  // Command to SSH and execute the script on Raspberry Pi
+  const char* ssh_command = "ssh pi@192.168.206.104 'cd ~/Desktop/eugen_ws && source devel/setup.bash && source network_conf.bash && roslaunch package_camera camera_test.launch'";
+  // Execute the SSH command
+  system(ssh_command);
 }
