@@ -152,6 +152,6 @@ void DashboardGui::on_startbutton_clicked()
 {
   // Command to SSH and execute the script on Raspberry Pi
   const char* ssh_command = "ssh pi@192.168.206.104 'cd ~/Desktop/eugen_ws && source devel/setup.bash && source network_conf.bash && roslaunch package_camera camera_test.launch'";
-  // Execute the SSH command
+  // Execute the SSH com mand
   system(ssh_command);
 }
