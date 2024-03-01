@@ -57,7 +57,6 @@ private:
   ros::Publisher  led_pub_;
   ros::Publisher  our_pub_;
 
-  //image_transport::ImageTransport it;
   image_transport::Subscriber image_sub;
   image_transport::ImageTransport *it;
 

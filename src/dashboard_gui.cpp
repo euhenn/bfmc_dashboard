@@ -6,43 +6,11 @@ DashboardGui::DashboardGui(QWidget *parent) :
   ui(new Ui::DashboardGui)
 {
   ui->setupUi(this);
-
   // setup the timer that will signal ros stuff to happen
   ros_timer = new QTimer(this);
   connect(ros_timer, SIGNAL(timeout()), this, SLOT(spinOnce()));
   ros_timer->start(100);  // set the rate to 100ms  You can change this if you want to increase/decrease update rate
 
-  //connect(ui->startROS, &QPushButton::clicked, this, &DashboardGui::on_startROS_clicked);
-/*
-  // setup subscriber by according to the ~/chatter_topic param
-  std::string listen_topic;
-  nh_->param<std::string>("listen_topic",listen_topic,"/talker/chatter");
-  chatter_sub_ = nh_->subscribe<std_msgs::String>(listen_topic, 1, &DashboardGui::chatterCallback, this);
-
-  // publish a message on the channel specified by ~/hello_topic param
-  std::string hello_topic;
-  nh_->param<std::string>("hello_topic",hello_topic,"chatter");
-  hello_pub_ = nh_->advertise<std_msgs::String>(hello_topic,1);
-
-  // subscriber to image
-  image_sub = it.subscribe("/automobile/camera_image", 1, &DashboardGui::updateImage, this);
-
-  std::string led_topic;
-  nh_->param<std::string>("led_topic", led_topic, "/toggle_led");
-  led_pub_ = nh_->advertise<std_msgs::Empty>(led_topic, 1);
-
-  std::string temp_topic;
-  nh_->param<std::string>("temp_topic",temp_topic,"/automobile/sonar/ahead/center");
-  temp_sub_ = nh_->subscribe<std_msgs::Float32>(temp_topic, 1, &DashboardGui::temperatureCallback, this);
-
-  //std::string humidity_topic;
-  //nh_->param<std::string>("humidity_topic",humidity_topic,"/humidity");
-  humidity_sub_ = nh_->subscribe<std_msgs::Float32>("/humidity", 1, &DashboardGui::humidityCallback, this);
-
-  std::string our_test;
-  nh_->param<std::string>("our_test", our_test, "/topic_chatter");
-  our_pub_ = nh_->advertise<std_msgs::String>(our_test, 1);
-  */
 }
 
 DashboardGui::~DashboardGui()
@@ -68,7 +36,7 @@ void DashboardGui::temperatureCallback(const std_msgs::Float32::ConstPtr& msg)
 {
   float temperature = msg->data;
   // Convert temperature to string for display
-  QString temp_str = QString::number(temperature, 'f', 2); // Assuming you want to display temperature with 2 decimal places
+  QString temp_str = QString::number(static_cast<double>(temperature), 'f', 2); // Assuming you want to display temperature with 2 decimal places
   ui->temp->setText(temp_str); // Update the QLabel with the temperature value
 }
 
@@ -76,7 +44,7 @@ void DashboardGui::humidityCallback(const std_msgs::Float32::ConstPtr& msg)
 {
   float humidity = msg->data;
   // Convert temperature to string for display
-  QString hum_str = QString::number(humidity, 'f', 2);
+  QString hum_str = QString::number(static_cast<double>(humidity), 'f', 2);
   ui->humidity->setText(hum_str);
 }
 
@@ -101,7 +69,7 @@ void DashboardGui::updateImage(const sensor_msgs::ImageConstPtr& msg)
 
       // OpenCV to QImage, BGR to RGB conversion
       cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
-      QImage qimage(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
+      QImage qimage(frame.data, frame.cols, frame.rows, static_cast<int>(frame.step), QImage::Format_RGB888);
 
       // display the image in QLabel
       QPixmap pixmap = QPixmap::fromImage(qimage);
@@ -144,16 +112,21 @@ void DashboardGui::on_startROS_clicked()
 
 void DashboardGui::initializeROS()
 {
-    // Initialize ROS
-    if (!ros::isInitialized())
-    {
-        int argc = 0;
-        char **argv = nullptr;
-        ros::init(argc, argv, "dashboard_gui_node", ros::init_options::AnonymousName);
-        ui->startROS->setStyleSheet("background-color: green;");
-    }
+  if (ros::master::getURI().empty())
+  {
+      std::string master_uri = "http://192.168.1.60:11311";
+      setenv("ROS_MASTER_URI", master_uri.c_str(), 1);
+  }
 
-    // Connect ROS callbacks
+  if (!ros::isInitialized())
+  {
+      int argc = 0;
+      char **argv = nullptr;
+      ros::init(argc, argv, "dashboard_gui_node", ros::init_options::AnonymousName);
+      ui->startROS->setStyleSheet("background-color: green;");
+  }
+
+    // connect ROS callbacks
     nh_ = ros::NodeHandlePtr(new ros::NodeHandle);
     image_transport::ImageTransport it(*nh_);
     chatter_sub_ = nh_->subscribe("chatter", 1, &DashboardGui::chatterCallback, this);
@@ -163,4 +136,5 @@ void DashboardGui::initializeROS()
     led_pub_ = nh_->advertise<std_msgs::Bool>("led_status", 10);
     our_pub_ = nh_->advertise<std_msgs::Empty>("our_topic", 10);
     image_sub = it.subscribe("/automobile/camera_image", 1, &DashboardGui::updateImage, this);
+    ui->startROS->setStyleSheet("background-color: blue;");
 }
