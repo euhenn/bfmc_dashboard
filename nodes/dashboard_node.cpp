@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
                        ros::this_node::getName()));
 
   // load the icon from our qrc file and set it as the application icon
-  QIcon icon(":/icons/doggo.png");
+  QIcon icon(":/icons/car_icon.png");
   w.setWindowIcon(icon);
 
   w.show();
