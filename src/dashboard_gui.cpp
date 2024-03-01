@@ -140,18 +140,15 @@ void DashboardGui::on_led_button_clicked()
 
 void DashboardGui::on_stopbutton_clicked()
 {
-  std_msgs::String msg;
-  std::stringstream ss;
-  ss << "STOP";
-  msg.data = ss.str();
+  const char* ssh_stop_command = "ssh pi@192.168.206.104 'pkill -f roslaunch && killall -9 rosmaster && killall -9 rosout'";
 
-  our_pub_.publish(msg);
+  system(ssh_stop_command);
 }
 
 void DashboardGui::on_startbutton_clicked()
 {
   // Command to SSH and execute the script on Raspberry Pi
-  const char* ssh_command = "ssh pi@192.168.206.104 'cd ~/Desktop/eugen_ws && source devel/setup.bash && source network_conf.bash && roslaunch package_camera camera_test.launch'";
+  const char* ssh_start_command = "ssh pi@192.168.206.104 'cd ~/Desktop/eugen_ws && source devel/setup.bash && export ROS_MASTER_URI='http://192.168.206.72:11311' && rosrun package_camera cameraNode_640x480.py'";
   // Execute the SSH com mand
-  system(ssh_command);
+  system(ssh_start_command);
 }
