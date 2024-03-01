@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <ros/ros.h>
 #include <qtimer.h>
+#include <cstdlib>
 #include <std_msgs/String.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/Float32.h>
