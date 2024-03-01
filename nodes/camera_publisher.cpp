@@ -9,7 +9,7 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "camera_publisher");
     ros::NodeHandle nh;
     image_transport::ImageTransport it(nh);
-    image_transport::Publisher pub = it.advertise("camera_image", 1);
+    image_transport::Publisher pub = it.advertise("automobile/camera_image", 1);
 
     cv::VideoCapture cap(0);  // Open the default camera (change index if using a different camera)
     if (!cap.isOpened()) {

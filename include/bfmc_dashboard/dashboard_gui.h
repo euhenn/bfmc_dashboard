@@ -38,13 +38,12 @@ public slots:
   void updateImage(const sensor_msgs::ImageConstPtr& msg);
 
 private slots:
+  void initializeROS();
   void on_hi_button_clicked();
-
   void on_led_button_clicked();
-
   void on_stopbutton_clicked();
-
   void on_startbutton_clicked();
+  void on_startROS_clicked();
 
 private:
   Ui::DashboardGui *ui;
@@ -58,10 +57,10 @@ private:
   ros::Publisher  led_pub_;
   ros::Publisher  our_pub_;
 
-  image_transport::ImageTransport it;
+  //image_transport::ImageTransport it;
   image_transport::Subscriber image_sub;
+  image_transport::ImageTransport *it;
 
-  //cv::VideoCapture capture{0};
 };
 
 #endif // DASHBOARD_GUI_H
