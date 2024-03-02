@@ -3,13 +3,16 @@
 
 #include <QDebug>
 #include <QWidget>
-#include <ros/ros.h>
+#include <QProcess>
 #include <qtimer.h>
 #include <cstdlib>
+
+#include <ros/ros.h>
 #include <std_msgs/String.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Empty.h>
+
 #include <sensor_msgs/Image.h>
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>
@@ -34,7 +37,6 @@ public:
 
 public slots:
   void spinOnce();
-  //void updateCamera();
   void updateImage(const sensor_msgs::ImageConstPtr& msg);
 
 private slots:
@@ -44,6 +46,7 @@ private slots:
   void on_stopbutton_clicked();
   void on_startbutton_clicked();
   void on_startROS_clicked();
+  void on_resetROS_clicked();
 
 private:
   Ui::DashboardGui *ui;

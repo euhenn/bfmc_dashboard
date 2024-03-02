@@ -107,6 +107,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="resetROS">
+       <property name="text">
+        <string>reset ROS</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="startbutton">
        <property name="text">
         <string>Start</string>
