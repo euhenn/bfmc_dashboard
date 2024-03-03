@@ -116,9 +116,19 @@ void DashboardGui::on_startbutton_clicked()
   ui->resetROS->setEnabled(true);
   ui->startbutton->setEnabled(false);
 
+  QString ARGS = "";
+  QString IP = ui->lineEdit->text();
+
+  if (ui->checkBox->isChecked()){
+    QString TOPIC_CAM = "topic:=" + ui->lineEdit2->text();
+    ARGS = TOPIC_CAM;
+  }
+
   QString ssh_stop_command = "ssh";
   QStringList arguments;
-  arguments << "pi@192.168.1.60" << "cd ~/Desktop/eugen_ws && source devel/setup.bash && export ROS_MASTER_URI='http://192.168.1.60:11311' && roslaunch package_camera camera_test.launch";
+  arguments << "pi@" + IP << "cd ~/Desktop/eugen_ws && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && roslaunch package_camera camera_test.launch " + ARGS;
+
+  qDebug() << "SSH Command Arguments:" << arguments; // Print the arguments
 
   QProcess *sshProcess = new QProcess(this);
   connect(sshProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=](int exitCode, QProcess::ExitStatus exitStatus){
@@ -127,6 +137,7 @@ void DashboardGui::on_startbutton_clicked()
       ui->startbutton->setEnabled(true);
     } else {
       qDebug() << "Error executing SSH command. Exit code:" << exitCode << "Exit status:" << exitStatus;
+      ui->startbutton->setEnabled(true);
     }
     sshProcess->deleteLater();
   });
