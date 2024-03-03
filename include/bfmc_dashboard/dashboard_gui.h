@@ -48,6 +48,8 @@ private slots:
   void on_startROS_clicked();
   void on_resetROS_clicked();
 
+  void on_left_steer_valueChanged(int value);
+
 private:
   Ui::DashboardGui *ui;
   QTimer *ros_timer;

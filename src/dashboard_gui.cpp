@@ -190,3 +190,8 @@ void DashboardGui::initializeROS()
   image_sub = it.subscribe("/automobile/camera_image", 1, &DashboardGui::updateImage, this);
   ui->startROS->setStyleSheet("background-color: green;");
 }
+
+void DashboardGui::on_left_steer_valueChanged(int value)
+{
+
+}
