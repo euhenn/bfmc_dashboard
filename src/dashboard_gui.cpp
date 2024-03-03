@@ -22,27 +22,31 @@ void DashboardGui::spinOnce(){
   //QApplication::quit();
 }
 
+/*
 void DashboardGui::chatterCallback(const std_msgs::String::ConstPtr &msg){
   auto qstring_msg = QString::fromStdString( msg->data.c_str() );
   ui->chatter->setText(qstring_msg);
-}
+}*/
 
+/*
 void DashboardGui::temperatureCallback(const std_msgs::Float32::ConstPtr& msg)
 {
   float temperature = msg->data;
   // Convert temperature to string for display
   QString temp_str = QString::number(static_cast<double>(temperature), 'f', 2); // Assuming you want to display temperature with 2 decimal places
   ui->temp->setText(temp_str); // Update the QLabel with the temperature value
-}
+}*/
 
+/*
 void DashboardGui::humidityCallback(const std_msgs::Float32::ConstPtr& msg)
 {
   float humidity = msg->data;
   // Convert temperature to string for display
   QString hum_str = QString::number(static_cast<double>(humidity), 'f', 2);
   ui->humidity->setText(hum_str);
-}
+}*/
 
+/*
 void DashboardGui::on_hi_button_clicked()
 {
   std_msgs::String msg;
@@ -53,7 +57,7 @@ void DashboardGui::on_hi_button_clicked()
   hello_pub_.publish(msg);
 
   ui->hi_num->setValue(ui->hi_num->value()+1);
-}
+}*/
 
 void DashboardGui::updateImage(const sensor_msgs::ImageConstPtr& msg)
 {
@@ -77,11 +81,11 @@ void DashboardGui::updateImage(const sensor_msgs::ImageConstPtr& msg)
   }
 }
 
-void DashboardGui::on_led_button_clicked()
+/*void DashboardGui::on_led_button_clicked()
 {
   std_msgs::Empty msg; // Create an empty message of type std_msgs::Empty
   led_pub_.publish(msg);
-}
+}*/
 
 void DashboardGui::on_stopbutton_clicked()
 {
@@ -181,17 +185,12 @@ void DashboardGui::initializeROS()
   // connect ROS callbacks
   nh_ = ros::NodeHandlePtr(new ros::NodeHandle);
   image_transport::ImageTransport it(*nh_);
-  chatter_sub_ = nh_->subscribe("chatter", 1, &DashboardGui::chatterCallback, this);
-  temp_sub_ = nh_->subscribe("temperature", 1, &DashboardGui::temperatureCallback, this);
-  humidity_sub_ = nh_->subscribe("humidity", 1, &DashboardGui::humidityCallback, this);
-  hello_pub_ = nh_->advertise<std_msgs::String>("hello", 10);
-  led_pub_ = nh_->advertise<std_msgs::Bool>("led_status", 10);
-  our_pub_ = nh_->advertise<std_msgs::Empty>("our_topic", 10);
+  //chatter_sub_ = nh_->subscribe("chatter", 1, &DashboardGui::chatterCallback, this);
+  //temp_sub_ = nh_->subscribe("temperature", 1, &DashboardGui::temperatureCallback, this);
+  //humidity_sub_ = nh_->subscribe("humidity", 1, &DashboardGui::humidityCallback, this);
+  //hello_pub_ = nh_->advertise<std_msgs::String>("hello", 10);
+  //led_pub_ = nh_->advertise<std_msgs::Bool>("led_status", 10);
+  //our_pub_ = nh_->advertise<std_msgs::Empty>("our_topic", 10);
   image_sub = it.subscribe("/automobile/camera_image", 1, &DashboardGui::updateImage, this);
   ui->startROS->setStyleSheet("background-color: green;");
-}
-
-void DashboardGui::on_left_steer_valueChanged(int value)
-{
-
 }

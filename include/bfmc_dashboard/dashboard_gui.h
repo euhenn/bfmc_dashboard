@@ -31,9 +31,9 @@ class DashboardGui : public QWidget
 public:
   explicit DashboardGui(QWidget *parent = nullptr);
   ~DashboardGui();
-  void chatterCallback(const std_msgs::String::ConstPtr& msg);
-  void temperatureCallback(const std_msgs::Float32::ConstPtr& msg);
-  void humidityCallback(const std_msgs::Float32::ConstPtr& msg);
+  //void chatterCallback(const std_msgs::String::ConstPtr& msg);
+  //void temperatureCallback(const std_msgs::Float32::ConstPtr& msg);
+  //void humidityCallback(const std_msgs::Float32::ConstPtr& msg);
 
 public slots:
   void spinOnce();
@@ -41,14 +41,14 @@ public slots:
 
 private slots:
   void initializeROS();
-  void on_hi_button_clicked();
-  void on_led_button_clicked();
+  //void on_hi_button_clicked();
+  //void on_led_button_clicked();
   void on_stopbutton_clicked();
   void on_startbutton_clicked();
   void on_startROS_clicked();
   void on_resetROS_clicked();
 
-  void on_left_steer_valueChanged(int value);
+  //void on_left_steer_valueChanged(int value);
 
 private:
   Ui::DashboardGui *ui;
