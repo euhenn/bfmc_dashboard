@@ -85,10 +85,10 @@ void DashboardGui::on_led_button_clicked()
 
 void DashboardGui::on_stopbutton_clicked()
 {
-  //const char* ssh_stop_command = "ssh pi@192.168.206.104 'pkill -f roslaunch && killall -9 rosmaster && killall -9 rosout'";
-  //const char* ssh_stop_command = "ssh pi@192.168.206.104 'pkill killall -9 rosmaster && killall -9 rosout'";
-  //system(ssh_stop_command);
-  // Command to SSH and execute the stop script on Raspberry Pi
+  ui->startROS->setEnabled(false);
+  ui->startROS->setStyleSheet("background-color:");
+  ui->resetROS->setEnabled(false);
+
   QString ssh_stop_command = "ssh";
   QStringList arguments;
   arguments << "pi@192.168.1.60" << "killall -9 rosmaster && killall -9 rosout";
@@ -112,6 +112,10 @@ void DashboardGui::on_stopbutton_clicked()
 
 void DashboardGui::on_startbutton_clicked()
 {
+  ui->startROS->setEnabled(true);
+  ui->resetROS->setEnabled(true);
+  ui->startbutton->setEnabled(false);
+
   QString ssh_stop_command = "ssh";
   QStringList arguments;
   arguments << "pi@192.168.1.60" << "cd ~/Desktop/eugen_ws && source devel/setup.bash && export ROS_MASTER_URI='http://192.168.1.60:11311' && roslaunch package_camera camera_test.launch";
@@ -120,6 +124,7 @@ void DashboardGui::on_startbutton_clicked()
   connect(sshProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=](int exitCode, QProcess::ExitStatus exitStatus){
     if (exitStatus == QProcess::NormalExit && exitCode == 0) {
       qDebug() << "SSH command executed successfully.";
+      ui->startbutton->setEnabled(true);
     } else {
       qDebug() << "Error executing SSH command. Exit code:" << exitCode << "Exit status:" << exitStatus;
     }
