@@ -33,7 +33,7 @@ public:
   ~DashboardGui();
   //void chatterCallback(const std_msgs::String::ConstPtr& msg);
   //void temperatureCallback(const std_msgs::Float32::ConstPtr& msg);
-  //void humidityCallback(const std_msgs::Float32::ConstPtr& msg);
+  void speedCallback(const std_msgs::Float32::ConstPtr& msg);
 
 public slots:
   void spinOnce();
@@ -50,6 +50,8 @@ private slots:
 
   //void on_left_steer_valueChanged(int value);
 
+  void on_lineEdit_editingFinished();
+
 private:
   Ui::DashboardGui *ui;
   QTimer *ros_timer;
@@ -57,7 +59,7 @@ private:
   ros::NodeHandlePtr nh_;
   ros::Subscriber chatter_sub_;
   ros::Subscriber temp_sub_;
-  ros::Subscriber humidity_sub_;
+  ros::Subscriber speed_sub_;
   ros::Publisher hello_pub_;
   ros::Publisher  led_pub_;
   ros::Publisher  our_pub_;

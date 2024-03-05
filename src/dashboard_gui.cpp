@@ -37,14 +37,14 @@ void DashboardGui::temperatureCallback(const std_msgs::Float32::ConstPtr& msg)
   ui->temp->setText(temp_str); // Update the QLabel with the temperature value
 }*/
 
-/*
-void DashboardGui::humidityCallback(const std_msgs::Float32::ConstPtr& msg)
+
+void DashboardGui::speedCallback(const std_msgs::Float32::ConstPtr& msg)
 {
-  float humidity = msg->data;
+  float speed_val = msg->data;
   // Convert temperature to string for display
-  QString hum_str = QString::number(static_cast<double>(humidity), 'f', 2);
-  ui->humidity->setText(hum_str);
-}*/
+  QString speed_str = QString::number(static_cast<double>(speed_val), 'f', 2);
+  ui->speed->setText(speed_str);
+}
 
 /*
 void DashboardGui::on_hi_button_clicked()
@@ -149,7 +149,7 @@ void DashboardGui::on_resetROS_clicked()
   // Perform cleanup before reinitializing ROS, such as shutting down subscribers and publishers
   chatter_sub_.shutdown();
   temp_sub_.shutdown();
-  humidity_sub_.shutdown();
+  speed_sub_.shutdown();
   hello_pub_.shutdown();
   led_pub_.shutdown();
   our_pub_.shutdown();
@@ -187,10 +187,15 @@ void DashboardGui::initializeROS()
   image_transport::ImageTransport it(*nh_);
   //chatter_sub_ = nh_->subscribe("chatter", 1, &DashboardGui::chatterCallback, this);
   //temp_sub_ = nh_->subscribe("temperature", 1, &DashboardGui::temperatureCallback, this);
-  //humidity_sub_ = nh_->subscribe("humidity", 1, &DashboardGui::humidityCallback, this);
+  speed_sub_ = nh_->subscribe("/speed", 1, &DashboardGui::speedCallback, this);
   //hello_pub_ = nh_->advertise<std_msgs::String>("hello", 10);
   //led_pub_ = nh_->advertise<std_msgs::Bool>("led_status", 10);
   //our_pub_ = nh_->advertise<std_msgs::Empty>("our_topic", 10);
   image_sub = it.subscribe("/automobile/camera_image", 1, &DashboardGui::updateImage, this);
   ui->startROS->setStyleSheet("background-color: green;");
+}
+
+void DashboardGui::on_lineEdit_editingFinished()
+{
+
 }
