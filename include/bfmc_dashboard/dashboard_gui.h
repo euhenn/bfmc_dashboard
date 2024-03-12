@@ -48,10 +48,6 @@ private slots:
   void on_startROS_clicked();
   void on_resetROS_clicked();
 
-  //void on_left_steer_valueChanged(int value);
-
-  void on_lineEdit_editingFinished();
-
 private:
   Ui::DashboardGui *ui;
   QTimer *ros_timer;
@@ -66,6 +62,8 @@ private:
 
   image_transport::Subscriber image_sub;
   image_transport::ImageTransport *it;
+
+  QString ipAddressText;
 
 };
 

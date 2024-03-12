@@ -89,10 +89,10 @@ void DashboardGui::updateImage(const sensor_msgs::ImageConstPtr& msg)
 
 void DashboardGui::on_stopbutton_clicked()
 {
-  //const char* ssh_stop_command = "ssh pi@192.168.206.104 'pkill -f roslaunch && killall -9 rosmaster && killall -9 rosout'";
-  //const char* ssh_stop_command = "ssh pi@192.168.206.104 'pkill killall -9 rosmaster && killall -9 rosout'";
-  //system(ssh_stop_command);
-  // Command to SSH and execute the stop script on Raspberry Pi
+  ui->startROS->setEnabled(false);
+  ui->startROS->setStyleSheet("background-color:");
+  ui->resetROS->setEnabled(false);
+
   QString ssh_stop_command = "ssh";
   QStringList arguments;
   arguments << "pi@192.168.1.60" << "killall -9 rosmaster && killall -9 rosout";
@@ -113,19 +113,34 @@ void DashboardGui::on_stopbutton_clicked()
 
   sshProcess->start(ssh_stop_command, arguments);
 }
-
 void DashboardGui::on_startbutton_clicked()
 {
+  ui->startROS->setEnabled(true);
+  ui->resetROS->setEnabled(true);
+  ui->startbutton->setEnabled(false);
+
+  QString ARGS = "";
+  QString IP = ui->lineEdit->text();
+
+  if (ui->checkBox->isChecked()){
+    QString TOPIC_CAM = "topic:=" + ui->lineEdit2->text();
+    ARGS = TOPIC_CAM;
+  }
+
   QString ssh_stop_command = "ssh";
   QStringList arguments;
-  arguments << "pi@192.168.1.60" << "cd ~/Desktop/eugen_ws && source devel/setup.bash && export ROS_MASTER_URI='http://192.168.1.60:11311' && roslaunch package_camera camera_test.launch";
+  arguments << "pi@" + IP << "cd ~/Desktop/eugen_ws && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && roslaunch package_camera camera_test.launch " + ARGS;
+
+  qDebug() << "SSH Command Arguments:" << arguments; // Print the arguments
 
   QProcess *sshProcess = new QProcess(this);
   connect(sshProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=](int exitCode, QProcess::ExitStatus exitStatus){
     if (exitStatus == QProcess::NormalExit && exitCode == 0) {
       qDebug() << "SSH command executed successfully.";
+      ui->startbutton->setEnabled(true);
     } else {
       qDebug() << "Error executing SSH command. Exit code:" << exitCode << "Exit status:" << exitStatus;
+      ui->startbutton->setEnabled(true);
     }
     sshProcess->deleteLater();
   });
@@ -166,7 +181,7 @@ void DashboardGui::initializeROS()
 {
   if (ros::master::getURI().empty())
   {
-    std::string master_uri = "http://192.168.1.60:11311";
+    std::string master_uri = "http://" + ipAddressText.toStdString() + ":11311";
     setenv("ROS_MASTER_URI", master_uri.c_str(), 1);
   }
 
@@ -195,7 +210,4 @@ void DashboardGui::initializeROS()
   ui->startROS->setStyleSheet("background-color: green;");
 }
 
-void DashboardGui::on_lineEdit_editingFinished()
-{
 
-}
