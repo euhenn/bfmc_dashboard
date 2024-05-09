@@ -142,10 +142,10 @@ void DashboardGui::on_startbutton_clicked()
 
   QString ssh_stop_command = "ssh";
   QStringList arguments;
-  //arguments << "pi@" + IP << "cd ~/Desktop/eugen_ws && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && roslaunch package_camera camera_test.launch " + ARGS;
+  //arguments << "pi@" + IP << "cd ~/Desktop/eugen_ws && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311'&& roslaunch package_camera camera_test.launch " + ARGS;
   //
   // arguments << "pi@" + IP << "cd ~/Desktop/eugen_ws &&";
-  arguments << "pi@" + IP << "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && roslaunch utils run_automobile_2024.launch";
+  arguments << "pi@" + IP << "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+"&&export ROS_HOSTNAME="+IP+" && roslaunch utils run_automobile_2024.launch";
   qDebug() << "SSH Command Arguments:" << arguments; // Print the arguments
 
   QProcess *sshProcess = new QProcess(this);
@@ -201,6 +201,10 @@ void DashboardGui::initializeROS()
   {
     std::string master_uri = "http://192.168.45.2:11311";
     setenv("ROS_MASTER_URI", master_uri.c_str(), 1);
+    std::string ros_pi = "192.168.45.192";
+    setenv("ROS_PI", ros_pi.c_str(), 1);
+    std::string ros_hostname = "192.168.45.192";
+    setenv("ROS_HOSTNAME", ros_hostname.c_str(), 1);
   }
 
   if (!ros::isInitialized())
@@ -279,7 +283,7 @@ void DashboardGui::on_mainbrainbutton_clicked()
         QString IP = ui->lineEdit->text();
 
         // Command to execute on the remote machine
-        QString remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && cd src/smart && python3 main_brain.py";
+        QString remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+"&&export ROS_HOSTNAME="+IP+ " && cd src/smart && python3 main_brain.py";
 
         // Construct the SSH command and arguments
         arguments << "pi@" + IP << remote_command;
