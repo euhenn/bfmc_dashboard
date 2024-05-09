@@ -17,12 +17,15 @@ set(ROS_DEPENDS
   sensor_msgs
   cv_bridge
   image_transport
+
   )
 
 set(EXTERNAL_DEPENDS
   Qt5Widgets
   Qt5PrintSupport
   OpenCV
+  message_runtime #me
+
   )
 
 set(EXTERNAL_DEPENDS_LIB
@@ -34,6 +37,21 @@ set(EXTERNAL_DEPENDS_LIB
 
 set(INCLUDE_DIRECTORIES
   ${OpenCV_INCLUDE_DIRS}
+  )
+
+####################me
+FILE(GLOB rosMsgFiles RELATIVE "${${PROJECT_NAME}_SOURCE_DIR}/msg"
+    "${${PROJECT_NAME}_SOURCE_DIR}/msg/*.msg")
+
+FOREACH(rosMsg ${rosMsgFiles})
+    MESSAGE( STATUS "Processing message file: ${rosMsg}" )
+    add_message_files( FILES ${rosMsg})
+ENDFOREACH(rosMsg)
+
+add_message_files(
+  DIRECTORY msg
+  FILES
+  ${rosMsg}
   )
 
 ##########################################
@@ -57,7 +75,10 @@ endforeach(DEPEND)
 ###
 ###  Add any required ros packages here /
 ###
-find_package(catkin REQUIRED COMPONENTS ${ROS_DEPENDS})
+find_package(catkin REQUIRED COMPONENTS ${ROS_DEPENDS} message_generation) #me
+
+##me
+generate_messages(DEPENDENCIES std_msgs)
 
 catkin_package(
   INCLUDE_DIRS
@@ -81,6 +102,8 @@ include_directories(
 ###########
 ## Build ##
 ###########
+
+
 
 file(GLOB HDRS
   "include/${PROJECT_NAME}/*.h"

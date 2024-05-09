@@ -21,7 +21,7 @@
   <depend>qtbase5-dev</depend>
   <depend>libboost-date-time-dev</depend>
   <depend>libboost-thread-dev</depend>
-  <depend>message_generation</depend>
+  <!--  <depend>message_generation</depend>-->
   <depend>rosconsole</depend>
   <depend>roscpp_serialization</depend>
   <depend>rostime</depend>
@@ -33,6 +33,8 @@
   <depend>cv_bridge</depend>
   <depend>image_transport</depend>
 
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
