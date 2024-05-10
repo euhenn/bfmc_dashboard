@@ -31,9 +31,7 @@ class DashboardGui : public QWidget
 public:
   explicit DashboardGui(QWidget *parent = nullptr);
   ~DashboardGui();
-  //void chatterCallback(const std_msgs::String::ConstPtr& msg);
-  //void temperatureCallback(const std_msgs::Float32::ConstPtr& msg);
-  //void humidityCallback(const std_msgs::Float32::ConstPtr& msg);
+
   void leftsonarCallback(const std_msgs::Float32::ConstPtr& msg);
   void centersonarCallback(const std_msgs::Float32::ConstPtr& msg);
   void rightsonarCallback(const std_msgs::Float32::ConstPtr& msg);
@@ -47,26 +45,15 @@ public slots:
 
 private slots:
   void initializeROS();
-  //void on_hi_button_clicked();
-  //void on_led_button_clicked();
   void on_stopbutton_clicked();
   void on_startbutton_clicked();
   void on_startROS_clicked();
   void on_resetROS_clicked();
-
   void on_mainbrainbutton_clicked();
 
 private:
   Ui::DashboardGui *ui;
   QTimer *ros_timer;
-  /*
-  ros::Subscriber chatter_sub_;
-  ros::Subscriber temp_sub_;
-  ros::Subscriber humidity_sub_;
-  ros::Publisher hello_pub_;
-  ros::Publisher  led_pub_;
-  ros::Publisher  our_pub_;
-  */
 
   ros::NodeHandlePtr nh_;
   ros::Subscriber leftsonar_sub_;

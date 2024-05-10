@@ -27,9 +27,38 @@ void DashboardGui::leftsonarCallback(const std_msgs::Float32::ConstPtr& msg)
   float distance = msg->data;
   // Convert to string for display
   QString value_str = QString::number(static_cast<double>(distance), 'f', 2); // 2 decimal places
-  ui->temp->setText(value_str); // Update the QLabel with the value
+  ui->leftsonar->setText(value_str); // Update the QLabel with the value
 }
-
+void DashboardGui::centersonarCallback(const std_msgs::Float32::ConstPtr& msg)
+{
+  float distance = msg->data;
+  QString value_str = QString::number(static_cast<double>(distance), 'f', 2);
+  ui->centralsonar->setText(value_str);
+}
+void DashboardGui::rightsonarCallback(const std_msgs::Float32::ConstPtr& msg)
+{
+  float distance = msg->data;
+  QString value_str = QString::number(static_cast<double>(distance), 'f', 2);
+  ui->rightsonar->setText(value_str);
+}
+void DashboardGui::speedCallback(const std_msgs::Float32::ConstPtr& msg)
+{
+  float distance = msg->data;
+  QString value_str = QString::number(static_cast<double>(distance), 'f', 2);
+  ui->speed->setText(value_str);
+}
+void DashboardGui::steerCallback(const std_msgs::Float32::ConstPtr& msg)
+{
+  float distance = msg->data;
+  QString value_str = QString::number(static_cast<double>(distance), 'f', 2);
+  ui->steer->setText(value_str);
+}
+void DashboardGui::positionCallback(const std_msgs::Float32::ConstPtr& msg)
+{
+  float distance = msg->data;
+  QString value_str = QString::number(static_cast<double>(distance), 'f', 2);
+  ui->position->setText(value_str);
+}
 
 
 /*
@@ -135,17 +164,11 @@ void DashboardGui::on_startbutton_clicked()
   QString ARGS = "";
   QString IP = ui->lineEdit->text();
 
-  if (ui->checkBox->isChecked()){
-    QString TOPIC_CAM = "topic:=" + ui->lineEdit2->text();
-    ARGS = TOPIC_CAM;
-  }
-
   QString ssh_stop_command = "ssh";
   QStringList arguments;
-  //arguments << "pi@" + IP << "cd ~/Desktop/eugen_ws && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311'&& roslaunch package_camera camera_test.launch " + ARGS;
-  //
-  // arguments << "pi@" + IP << "cd ~/Desktop/eugen_ws &&";
-  arguments << "pi@" + IP << "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+"&&export ROS_HOSTNAME="+IP+" && roslaunch utils run_automobile_2024.launch";
+
+  arguments << "pi@" + IP << "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && roslaunch utils run_automobile_2024.launch";
+  //arguments << "pi@" + IP << "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && roscore";
   qDebug() << "SSH Command Arguments:" << arguments; // Print the arguments
 
   QProcess *sshProcess = new QProcess(this);
@@ -186,6 +209,11 @@ void DashboardGui::on_resetROS_clicked()
   our_pub_.shutdown();
   */
   leftsonar_sub_.shutdown();
+  centersonar_sub_.shutdown();
+  rightsonar_sub_.shutdown();
+  speed_sub_.shutdown();
+  steer_sub_.shutdown();
+  position_sub_.shutdown();
   image_sub.shutdown();
 
   // Clear the current ROS node handle
@@ -199,12 +227,17 @@ void DashboardGui::initializeROS()
 {
   if (ros::master::getURI().empty())
   {
-    std::string master_uri = "http://192.168.45.2:11311";
-    setenv("ROS_MASTER_URI", master_uri.c_str(), 1);
+    QString MASTER_URI = ui->lineEdit->text();
+    QString master_uri = "http://" + MASTER_URI + ":11311";
+
     std::string ros_pi = "192.168.45.192";
-    setenv("ROS_PI", ros_pi.c_str(), 1);
     std::string ros_hostname = "192.168.45.192";
+
+    setenv("ROS_MASTER_URI", master_uri.toStdString().c_str(), 1);
+    setenv("ROS_PI", ros_pi.c_str(), 1);
     setenv("ROS_HOSTNAME", ros_hostname.c_str(), 1);
+
+
   }
 
   if (!ros::isInitialized())
@@ -231,6 +264,12 @@ void DashboardGui::initializeROS()
   our_pub_ = nh_->advertise<std_msgs::Empty>("our_topic", 10);
   */
   leftsonar_sub_ = nh_->subscribe("/automobile/sonar/left", 1, &DashboardGui::leftsonarCallback, this);
+  centersonar_sub_ = nh_->subscribe("/automobile/sonar/center", 1, &DashboardGui::centersonarCallback, this);
+  rightsonar_sub_ = nh_->subscribe("/automobile/sonar/right", 1, &DashboardGui::rightsonarCallback, this);
+  speed_sub_ = nh_->subscribe("/automobile/command/speed", 1, &DashboardGui::speedCallback, this);
+  steer_sub_ = nh_->subscribe("/automobile/command/steer", 1, &DashboardGui::steerCallback, this);
+  position_sub_ = nh_->subscribe("/automobile/feedback/position", 1, &DashboardGui::positionCallback, this);
+
   image_sub = it.subscribe("/automobile/camera_image", 1, &DashboardGui::updateImage, this);
 
   ui->startROS->setStyleSheet("background-color: green;");
@@ -283,7 +322,7 @@ void DashboardGui::on_mainbrainbutton_clicked()
         QString IP = ui->lineEdit->text();
 
         // Command to execute on the remote machine
-        QString remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+"&&export ROS_HOSTNAME="+IP+ " && cd src/smart && python3 main_brain.py";
+        QString remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && cd src/smart && python3 main_brain.py";
 
         // Construct the SSH command and arguments
         arguments << "pi@" + IP << remote_command;
