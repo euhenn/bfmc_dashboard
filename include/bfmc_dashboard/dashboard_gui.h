@@ -12,6 +12,7 @@
 #include <std_msgs/Bool.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Empty.h>
+//#include <bfmc_dashboard/vehicles.h>
 
 #include <sensor_msgs/Image.h>
 #include <cv_bridge/cv_bridge.h>
@@ -38,6 +39,10 @@ public:
   void speedCallback(const std_msgs::Float32::ConstPtr& msg);
   void steerCallback(const std_msgs::Float32::ConstPtr& msg);
   void positionCallback(const std_msgs::Float32::ConstPtr& msg);
+  //void localizationCallback(const bfmc_dashboard::vehicles::ConstPtr& msg);
+
+
+
 
 public slots:
   void spinOnce();
@@ -63,6 +68,7 @@ private:
   ros::Subscriber speed_sub_;
   ros::Subscriber steer_sub_;
   ros::Subscriber position_sub_;
+  //ros::Subscriber localization_sub_;
 
   image_transport::Subscriber image_sub;
   image_transport::ImageTransport *it;

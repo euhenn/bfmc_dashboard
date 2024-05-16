@@ -59,6 +59,17 @@ void DashboardGui::positionCallback(const std_msgs::Float32::ConstPtr& msg)
   QString value_str = QString::number(static_cast<double>(distance), 'f', 2);
   ui->position->setText(value_str);
 }
+/*
+void DashboardGui::localizationCallback(const bfmc_dashboard::vehicles::ConstPtr& msg)
+{
+  float x = msg->posA;
+  float y = msg->posB;
+  QString value_str = QString::number(static_cast<double>(x), 'f', 2);
+  QString value2_str = QString::number(static_cast<double>(y), 'f', 2);
+  ui->localization_x->setText(value_str);
+  ui->localization_y->setText(value2_str);
+}*/
+
 
 
 /*
@@ -270,6 +281,8 @@ void DashboardGui::initializeROS()
   speed_sub_ = nh_->subscribe("/automobile/command/speed", 1, &DashboardGui::speedCallback, this);
   steer_sub_ = nh_->subscribe("/automobile/command/steer", 1, &DashboardGui::steerCallback, this);
   position_sub_ = nh_->subscribe("/automobile/feedback/position", 1, &DashboardGui::positionCallback, this);
+  //localization_sub_ = nh_->subscribe("/automobile/vehicles", 1, &DashboardGui::localizationCallback, this);
+
 
   //image_sub = it.subscribe("/automobile/camera_image", 1, &DashboardGui::updateImage, this);
 
