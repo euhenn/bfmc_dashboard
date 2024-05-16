@@ -41,7 +41,7 @@ public:
 
 public slots:
   void spinOnce();
-  void updateImage(const sensor_msgs::ImageConstPtr& msg);
+  //void updateImage(const sensor_msgs::ImageConstPtr& msg);
 
 private slots:
   void initializeROS();
@@ -50,6 +50,7 @@ private slots:
   void on_startROS_clicked();
   void on_resetROS_clicked();
   void on_mainbrainbutton_clicked();
+  void on_speeeedbutton_clicked();
 
 private:
   Ui::DashboardGui *ui;

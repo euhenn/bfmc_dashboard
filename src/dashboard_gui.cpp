@@ -96,7 +96,7 @@ void DashboardGui::on_hi_button_clicked()
   ui->hi_num->setValue(ui->hi_num->value()+1);
 }
 */
-
+/*
 void DashboardGui::updateImage(const sensor_msgs::ImageConstPtr& msg)
 {
   try
@@ -117,7 +117,7 @@ void DashboardGui::updateImage(const sensor_msgs::ImageConstPtr& msg)
   {
     ROS_ERROR("cv_bridge exception: %s", e.what());
   }
-}
+}*/
 
 /*
 void DashboardGui::on_led_button_clicked()
@@ -164,13 +164,11 @@ void DashboardGui::on_startbutton_clicked()
   QString ARGS = "";
   QString IP = ui->lineEdit->text();
 
-  QString logFilePath = "log/logfile.txt";
   QString ssh_stop_command = "ssh";
   QStringList arguments;
 
 
   arguments << "pi@" + IP << "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && roslaunch utils run_automobile_2024.launch";
-  //arguments << "pi@" + IP << "ls > " +logFilePath;
   qDebug() << "SSH Command Arguments:" << arguments; // Print the arguments
 
   QProcess *sshProcess = new QProcess(this);
@@ -231,13 +229,14 @@ void DashboardGui::initializeROS()
   {
     QString MASTER_URI = ui->lineEdit->text();
     QString master_uri = "http://" + MASTER_URI + ":11311";
+    QString ros_pi = ui->lineEdit_2->text();
 
-    std::string ros_pi = "192.168.45.192";
+    //std::string ros_pi = "192.168.45.192";
     std::string ros_hostname = "192.168.45.192";
 
     setenv("ROS_MASTER_URI", master_uri.toStdString().c_str(), 1);
-    setenv("ROS_PI", ros_pi.c_str(), 1);
-    setenv("ROS_HOSTNAME", ros_hostname.c_str(), 1);
+    setenv("ROS_PI", ros_pi.toStdString().c_str(), 1);
+    setenv("ROS_HOSTNAME", ros_pi.toStdString().c_str(), 1);
 
 
   }
@@ -272,7 +271,7 @@ void DashboardGui::initializeROS()
   steer_sub_ = nh_->subscribe("/automobile/command/steer", 1, &DashboardGui::steerCallback, this);
   position_sub_ = nh_->subscribe("/automobile/feedback/position", 1, &DashboardGui::positionCallback, this);
 
-  image_sub = it.subscribe("/automobile/camera_image", 1, &DashboardGui::updateImage, this);
+  //image_sub = it.subscribe("/automobile/camera_image", 1, &DashboardGui::updateImage, this);
 
   ui->startROS->setStyleSheet("background-color: green;");
 }
@@ -281,8 +280,9 @@ void DashboardGui::initializeROS()
 void DashboardGui::on_mainbrainbutton_clicked()
 {
     if (ui->mainbrainbutton->styleSheet() == "background-color: green;") {
-        // If the button is green, change it to red and send SIGINT signal to kill the process
-        ui->mainbrainbutton->setStyleSheet("background-color: red;");
+        // If the button is green, change it to grey and send SIGINT signal to kill the process
+        ui->mainbrainbutton->setStyleSheet(""); // Clears the style sheet, default color grey
+        ui->mainbrainbutton->setText("Main 🧠");
 
         QString ssh_command = "ssh";
         QStringList arguments;
@@ -318,16 +318,26 @@ void DashboardGui::on_mainbrainbutton_clicked()
     } else {
         // If the button is red or default, change it to green and send the command
         ui->mainbrainbutton->setStyleSheet("background-color: green;");
+        ui->mainbrainbutton->setText("STOP");
 
         QString ssh_command = "ssh";
         QStringList arguments;
         QString IP = ui->lineEdit->text();
 
-        // Command to execute on the remote machine
-        QString remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && cd src/smart && python3 main_brain.py";
+        QString remote_command;
+
+        // IF CHECKED FOR RANDOM POSITION
+        if (ui->checkBox->isChecked()) {
+           remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && cd src/smart && python3 main_brain.py --random";
+        }
+        else {
+          remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && cd src/smart && python3 main_brain.py";
+        }
 
         // Construct the SSH command and arguments
         arguments << "pi@" + IP << remote_command;
+
+
         qDebug() << "SSH Command Arguments:" << arguments;
 
         // Create a new QProcess to run the SSH command
@@ -339,6 +349,9 @@ void DashboardGui::on_mainbrainbutton_clicked()
                 qDebug() << "SSH command executed successfully.";
             } else {
                 qDebug() << "Error executing SSH command. Exit code:" << exitCode << "Exit status:" << exitStatus;
+                ui->mainbrainbutton->setStyleSheet("background-color: red;");
+                //check this dude back if error
+                ui->checkBox->setChecked(true);
             }
             sshProcess->deleteLater(); // Clean up the process
         });
@@ -348,9 +361,90 @@ void DashboardGui::on_mainbrainbutton_clicked()
             sshProcess->deleteLater(); // Clean up the process
         });
 
+        //uncheck this dude
+        ui->checkBox->setChecked(false);
+
         // Start the SSH process
         sshProcess->start(ssh_command, arguments);
     }
 }
 
 
+
+void DashboardGui::on_speeeedbutton_clicked()
+{
+  if (ui->speeeedbutton->styleSheet() == "background-color: green;") {
+      // If the button is green, change it to red and send SIGINT signal to kill the process
+      ui->speeeedbutton->setStyleSheet("");
+      ui->speeeedbutton->setText("SPEEEEED!");
+
+      QString ssh_command = "ssh";
+      QStringList arguments;
+      QString IP = ui->lineEdit->text();
+
+      // Construct the command to send the SIGINT signal to the process
+      QString remote_command = "pkill -2 -f 'python3 main_brain.py'";
+
+      // Construct the SSH command and arguments
+      arguments << "pi@" + IP << remote_command;
+      qDebug() << "SSH Command Arguments:" << arguments;
+
+      // Create a new QProcess to run the SSH command
+      QProcess *sshProcess = new QProcess(this);
+
+      // Connect signals for process completion and error handling
+      connect(sshProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=](int exitCode, QProcess::ExitStatus exitStatus){
+          if (exitStatus == QProcess::NormalExit && exitCode == 0) {
+              qDebug() << "SSH command executed successfully.";
+          } else {
+              qDebug() << "Error executing SSH command. Exit code:" << exitCode << "Exit status:" << exitStatus;
+          }
+          sshProcess->deleteLater(); // Clean up the process
+      });
+
+      connect(sshProcess, &QProcess::errorOccurred, [=](QProcess::ProcessError error){
+          qDebug() << "SSH command error:" << error;
+          sshProcess->deleteLater(); // Clean up the process
+      });
+
+      // Start the SSH process
+      sshProcess->start(ssh_command, arguments);
+  } else {
+      // If the button is red or default, change it to green and send the command
+      ui->speeeedbutton->setStyleSheet("background-color: green;");
+      ui->speeeedbutton->setText("STOP");
+
+      QString ssh_command = "ssh";
+      QStringList arguments;
+      QString IP = ui->lineEdit->text();
+
+      // Command to execute on the remote machine
+      QString remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && cd src/smart && python3 main_brain.py --speed";
+
+      // Construct the SSH command and arguments
+      arguments << "pi@" + IP << remote_command;
+      qDebug() << "SSH Command Arguments:" << arguments;
+
+      // Create a new QProcess to run the SSH command
+      QProcess *sshProcess = new QProcess(this);
+
+      // Connect signals for process completion and error handling
+      connect(sshProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=](int exitCode, QProcess::ExitStatus exitStatus){
+          if (exitStatus == QProcess::NormalExit && exitCode == 0) {
+              qDebug() << "SSH command executed successfully.";
+          } else {
+              qDebug() << "Error executing SSH command. Exit code:" << exitCode << "Exit status:" << exitStatus;
+              ui->speeeedbutton->setStyleSheet("background-color: red;");
+          }
+          sshProcess->deleteLater(); // Clean up the process
+      });
+
+      connect(sshProcess, &QProcess::errorOccurred, [=](QProcess::ProcessError error){
+          qDebug() << "SSH command error:" << error;
+          sshProcess->deleteLater(); // Clean up the process
+      });
+
+      // Start the SSH process
+      sshProcess->start(ssh_command, arguments);
+  }
+}
