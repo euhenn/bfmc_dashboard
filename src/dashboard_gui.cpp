@@ -164,11 +164,13 @@ void DashboardGui::on_startbutton_clicked()
   QString ARGS = "";
   QString IP = ui->lineEdit->text();
 
+  QString logFilePath = "log/logfile.txt";
   QString ssh_stop_command = "ssh";
   QStringList arguments;
 
+
   arguments << "pi@" + IP << "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && roslaunch utils run_automobile_2024.launch";
-  //arguments << "pi@" + IP << "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && roscore";
+  //arguments << "pi@" + IP << "ls > " +logFilePath;
   qDebug() << "SSH Command Arguments:" << arguments; // Print the arguments
 
   QProcess *sshProcess = new QProcess(this);

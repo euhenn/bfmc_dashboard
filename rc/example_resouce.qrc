@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/icons">
         <file>car_icon.png</file>
+        <file>nosignal.png</file>
     </qresource>
 </RCC>
