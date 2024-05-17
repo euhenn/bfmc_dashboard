@@ -15,22 +15,22 @@ void CustomButton::mousePressEvent(QMouseEvent *event)
     if (x < width / 2 && y < height / 2)
     {
         //qDebug() << "Left top";
-        flag = "--leftup";
+        flag = "--north";
     }
     else if (x >= width / 2 && y < height / 2)
     {
         //qDebug() << "Right top";
-        flag = "--rightup";
+        flag = "--south";
     }
     else if (x < width / 2 && y >= height / 2)
     {
         //qDebug() << "Left bottom";
-        flag = "--leftdown";
+        flag = "--west";
     }
     else if (x >= width / 2 && y >= height / 2)
     {
         //qDebug() << "Right bottom";
-        flag = "--rightdown";
+        flag = "--east";
     }
 
     // Call the base class implementation

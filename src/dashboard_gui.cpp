@@ -73,6 +73,20 @@ void DashboardGui::carCallback(const std_msgs::Float32::ConstPtr& msg)
   QString value_str = QString::number(static_cast<double>(distance), 'f', 2);
   ui->car->setText(value_str);
 }
+
+void DashboardGui::closestnodeCallback(const std_msgs::Float32::ConstPtr& msg)
+{
+  float distance = msg->data;
+  QString value_str = QString::number(static_cast<double>(distance), 'f', 2);
+  ui->closenode->setText(value_str);
+}
+
+void DashboardGui::nexteventCallback(const std_msgs::String::ConstPtr& msg)
+{
+  auto qstring_msg = QString::fromStdString( msg->data.c_str() );
+  ui->nextevent->setText(qstring_msg);
+}
+
 /*
 void DashboardGui::localizationCallback(const bfmc_dashboard::vehicles::ConstPtr& msg)
 {
@@ -335,6 +349,8 @@ void DashboardGui::initializeROS()
   doll_sub_ = nh_->subscribe("/automobile/detection/doll", 1, &DashboardGui::dollCallback, this);
   car_sub_ = nh_->subscribe("/automobile/detection/car", 1, &DashboardGui::carCallback, this);
   //localization_sub_ = nh_->subscribe("/automobile/vehicles", 1, &DashboardGui::localizationCallback, this);
+  closestnode_sub_ = nh_->subscribe("/automobile/closest_node", 1, &DashboardGui::closestnodeCallback, this);
+  nextevent_sub_= nh_->subscribe("/automobile/next_event", 1, &DashboardGui::nexteventCallback, this);
 
 
   //image_sub = it.subscribe("/automobile/camera_image", 1, &DashboardGui::updateImage, this);
@@ -403,6 +419,8 @@ void DashboardGui::on_mainbrainbutton_clicked()
     // Construct the SSH command and arguments
     arguments << "pi@" + IP << remote_command;
 
+    qDebug() << "SSH Command Arguments:" << arguments;
+
     if (ui->checkBoxmind->isChecked()) {
       // Get the flag from the custom button
       CustomButton *startButton = qobject_cast<CustomButton *>(ui->mainbrainbutton);
@@ -414,7 +432,7 @@ void DashboardGui::on_mainbrainbutton_clicked()
       }
     }
 
-    qDebug() << "SSH Command Arguments:" << arguments;
+
 
     // Create a new QProcess to run the SSH command
     QProcess *sshProcess = new QProcess(this);

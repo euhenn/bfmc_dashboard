@@ -43,6 +43,8 @@ public:
   void positionCallback(const std_msgs::Float32::ConstPtr& msg);
   void dollCallback(const std_msgs::Float32::ConstPtr& msg);
   void carCallback(const std_msgs::Float32::ConstPtr& msg);
+  void closestnodeCallback(const std_msgs::Float32::ConstPtr& msg);
+  void nexteventCallback(const std_msgs::String::ConstPtr& msg);
   //void localizationCallback(const bfmc_dashboard::vehicles::ConstPtr& msg);
 
 
@@ -74,6 +76,9 @@ private:
   ros::Subscriber position_sub_;
   ros::Subscriber car_sub_;
   ros::Subscriber doll_sub_;
+  ros::Subscriber nextevent_sub_;
+  ros::Subscriber closestnode_sub_;
+
   //ros::Subscriber localization_sub_;
 
   image_transport::Subscriber image_sub;
