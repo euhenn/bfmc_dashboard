@@ -1,11 +1,13 @@
 #include "dashboard_gui.h"
 #include "ui_dashboard_gui.h"
 
+
 DashboardGui::DashboardGui(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::DashboardGui)
 {
   ui->setupUi(this);
+
 }
 
 DashboardGui::~DashboardGui()
@@ -151,9 +153,10 @@ void DashboardGui::on_led_button_clicked()
 
 void DashboardGui::on_stopbutton_clicked()
 {
-  ui->startROS->setEnabled(false);
+  //ui->startROS->setEnabled(false);
   ui->startROS->setStyleSheet("background-color:");
-  ui->resetROS->setEnabled(false);
+  //ui->resetROS->setEnabled(false);
+  ui->startbutton->setEnabled(true);
 
   QString IP = ui->lineEdit->text();
 
@@ -188,29 +191,65 @@ void DashboardGui::on_startbutton_clicked()
   QString IP = ui->lineEdit->text();
 
   QString ssh_stop_command = "ssh";
-  QStringList arguments;
 
+  QStringList arguments_automobile;
+  arguments_automobile << "pi@" + IP
+            << "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && roslaunch utils run_automobile_2024.launch";
 
-  arguments << "pi@" + IP << "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && roslaunch utils run_automobile_2024.launch";
-  qDebug() << "SSH Command Arguments:" << arguments; // Print the arguments
+  QStringList arguments_semaphore;
+  arguments_semaphore << "pi@" + IP
+                      << "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP=" + IP + " && export ROS_HOSTNAME=" + IP + " && cd src/input/src/data/CarsAndSemaphores && python3 semaphore_with_positionNODE.py";
 
-  QProcess *sshProcess = new QProcess(this);
-  connect(sshProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=](int exitCode, QProcess::ExitStatus exitStatus){
-    if (exitStatus == QProcess::NormalExit && exitCode == 0) {
-      qDebug() << "SSH command executed successfully.";
-      ui->startbutton->setEnabled(true);
-    } else {
-      qDebug() << "Error executing SSH command. Exit code:" << exitCode << "Exit status:" << exitStatus;
-      ui->startbutton->setEnabled(true);
-    }
-    sshProcess->deleteLater();
-  });
-  connect(sshProcess, &QProcess::errorOccurred, [=](QProcess::ProcessError error){
-    qDebug() << "SSH command error:" << error;
-    sshProcess->deleteLater();
-  });
+  // Third set of arguments
+  QStringList arguments_vehicle;
+  arguments_vehicle << "pi@" + IP
+                    << "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP=" + IP + " && export ROS_HOSTNAME=" + IP + " && cd src/input/src/data/TrafficCommunication && python3 vehicleNODE.py";
 
-  sshProcess->start(ssh_stop_command, arguments);
+  // Function to create, start, and handle a QProcess
+      auto startSSHProcess = [this](const QStringList &arguments, const QString &description) {
+          QProcess *sshProcess = new QProcess(this);
+          connect(sshProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=](int exitCode, QProcess::ExitStatus exitStatus){
+              if (exitStatus == QProcess::NormalExit && exitCode == 0) {
+                  qDebug() << description << "SSH command executed successfully.";
+              } else {
+                  qDebug() << "Error executing " << description << " SSH command. Exit code:" << exitCode << " Exit status:" << exitStatus;
+              }
+              sshProcess->deleteLater();
+          });
+          connect(sshProcess, &QProcess::errorOccurred, [=](QProcess::ProcessError error){
+              qDebug() << description << " SSH command error:" << error;
+              sshProcess->deleteLater();
+          });
+
+          sshProcess->start("ssh", arguments);
+      };
+
+      // Start each SSH process
+      startSSHProcess(arguments_automobile, "Automobile");
+      startSSHProcess(arguments_semaphore, "Semaphore");
+      startSSHProcess(arguments_vehicle, "Vehicle");
+
+      /*
+      qDebug() << "SSH Command Arguments:" << arguments; // Print the arguments
+
+      QProcess *sshProcess = new QProcess(this);
+      connect(sshProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=](int exitCode, QProcess::ExitStatus exitStatus){
+        if (exitStatus == QProcess::NormalExit && exitCode == 0) {
+          qDebug() << "SSH command executed successfully.";
+          ui->startbutton->setEnabled(true);
+        } else {
+          qDebug() << "Error executing SSH command. Exit code:" << exitCode << "Exit status:" << exitStatus;
+          ui->startbutton->setEnabled(true);
+        }
+        sshProcess->deleteLater();
+      });
+      connect(sshProcess, &QProcess::errorOccurred, [=](QProcess::ProcessError error){
+        qDebug() << "SSH command error:" << error;
+        sshProcess->deleteLater();
+      });
+
+      sshProcess->start(ssh_stop_command, arguments);
+      */
 
 }
 
@@ -475,3 +514,4 @@ void DashboardGui::on_speeeedbutton_clicked()
       sshProcess->start(ssh_command, arguments);
   }
 }
+

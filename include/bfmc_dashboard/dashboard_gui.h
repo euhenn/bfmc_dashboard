@@ -21,6 +21,8 @@
 #include <opencv4/opencv2/highgui/highgui.hpp>
 #include <opencv4/opencv2/imgproc/imgproc.hpp>
 
+#include "custombutton.h"
+
 namespace Ui {
 class DashboardGui;
 }
@@ -47,6 +49,7 @@ public:
 public slots:
   void spinOnce();
   //void updateImage(const sensor_msgs::ImageConstPtr& msg);
+  //void handleCustomButtonClicked(const QString &flag);  // Slot to handle custom button click
 
 private slots:
   void initializeROS();
@@ -56,6 +59,7 @@ private slots:
   void on_resetROS_clicked();
   void on_mainbrainbutton_clicked();
   void on_speeeedbutton_clicked();
+
 
 private:
   Ui::DashboardGui *ui;
@@ -74,6 +78,8 @@ private:
 
   image_transport::Subscriber image_sub;
   image_transport::ImageTransport *it;
+
+  CustomButton *myButton;  // Declare the custom button
 
 };
 

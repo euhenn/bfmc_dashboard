@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>477</width>
-    <height>397</height>
+    <width>539</width>
+    <height>461</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -589,7 +589,7 @@
           </layout>
          </item>
          <item>
-          <widget class="QPushButton" name="mainbrainbutton">
+          <widget class="CustomButton" name="mainbrainbutton">
            <property name="minimumSize">
             <size>
              <width>120</width>
@@ -616,7 +616,7 @@
           </widget>
          </item>
          <item>
-          <widget class="Line" name="line_4">
+          <widget class="Line" name="line_down">
            <property name="autoFillBackground">
             <bool>false</bool>
            </property>
@@ -660,6 +660,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CustomButton</class>
+   <extends>QPushButton</extends>
+   <header>custombutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
