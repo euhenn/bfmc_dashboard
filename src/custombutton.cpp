@@ -11,31 +11,33 @@ void CustomButton::mousePressEvent(QMouseEvent *event)
     int y = event->pos().y();
     int width = this->width();
     int height = this->height();
-    QString flag;
 
     if (x < width / 2 && y < height / 2)
     {
-        qDebug() << "Left top";
+        //qDebug() << "Left top";
         flag = "--leftup";
     }
     else if (x >= width / 2 && y < height / 2)
     {
-        qDebug() << "Right top";
+        //qDebug() << "Right top";
         flag = "--rightup";
     }
     else if (x < width / 2 && y >= height / 2)
     {
-        qDebug() << "Left bottom";
+        //qDebug() << "Left bottom";
         flag = "--leftdown";
     }
     else if (x >= width / 2 && y >= height / 2)
     {
-        qDebug() << "Right bottom";
+        //qDebug() << "Right bottom";
         flag = "--rightdown";
     }
 
-    emit customClicked(flag);  // Emit custom signal with flag
-
     // Call the base class implementation
     QPushButton::mousePressEvent(event);
+}
+
+QString CustomButton::getFlag() const
+{
+    return flag;
 }

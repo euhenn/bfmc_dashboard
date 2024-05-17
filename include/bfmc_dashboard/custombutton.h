@@ -10,11 +10,13 @@ class CustomButton : public QPushButton
 
 public:
     explicit CustomButton(QWidget *parent = nullptr);
-
-signals:
-    void customClicked(const QString &flag);  // Custom signal with flag
+    QString getFlag() const;  // Method to get the flag
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
+
+private:
+    QString flag;  // Store the flag based on the last click position
 };
+
 #endif // CUSTOMBUTTON_H

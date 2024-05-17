@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>539</width>
-    <height>461</height>
+    <width>482</width>
+    <height>397</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -395,7 +395,7 @@
               </size>
              </property>
              <property name="text">
-              <string>192.168.45.2</string>
+              <string>192.168.50.105</string>
              </property>
             </widget>
            </item>
@@ -451,7 +451,7 @@
               </size>
              </property>
              <property name="text">
-              <string>192.168.45.192</string>
+              <string>192.168.50.</string>
              </property>
             </widget>
            </item>
@@ -552,6 +552,23 @@
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="checkBoxmind">
+             <property name="font">
+              <font>
+               <pointsize>8</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::RightToLeft</enum>
+             </property>
+             <property name="text">
+              <string>MIND</string>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QCheckBox" name="checkBox">
