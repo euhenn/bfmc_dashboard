@@ -290,6 +290,9 @@ void DashboardGui::on_resetROS_clicked()
   speed_sub_.shutdown();
   steer_sub_.shutdown();
   position_sub_.shutdown();
+  closestnode_sub_.shutdown();
+  nextevent_sub_.shutdown();
+
   image_sub.shutdown();
 
   // Clear the current ROS node handle
