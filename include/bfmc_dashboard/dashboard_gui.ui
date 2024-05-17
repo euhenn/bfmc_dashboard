@@ -566,7 +566,7 @@
               <enum>Qt::RightToLeft</enum>
              </property>
              <property name="text">
-              <string>MIND</string>
+              <string>SUB</string>
              </property>
             </widget>
            </item>
