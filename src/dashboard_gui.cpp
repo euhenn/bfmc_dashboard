@@ -59,6 +59,18 @@ void DashboardGui::positionCallback(const std_msgs::Float32::ConstPtr& msg)
   QString value_str = QString::number(static_cast<double>(distance), 'f', 2);
   ui->position->setText(value_str);
 }
+void DashboardGui::dollCallback(const std_msgs::Float32::ConstPtr& msg)
+{
+  float distance = msg->data;
+  QString value_str = QString::number(static_cast<double>(distance), 'f', 2);
+  ui->doll->setText(value_str);
+}
+void DashboardGui::carCallback(const std_msgs::Float32::ConstPtr& msg)
+{
+  float distance = msg->data;
+  QString value_str = QString::number(static_cast<double>(distance), 'f', 2);
+  ui->car->setText(value_str);
+}
 /*
 void DashboardGui::localizationCallback(const bfmc_dashboard::vehicles::ConstPtr& msg)
 {
@@ -281,6 +293,8 @@ void DashboardGui::initializeROS()
   speed_sub_ = nh_->subscribe("/automobile/command/speed", 1, &DashboardGui::speedCallback, this);
   steer_sub_ = nh_->subscribe("/automobile/command/steer", 1, &DashboardGui::steerCallback, this);
   position_sub_ = nh_->subscribe("/automobile/feedback/position", 1, &DashboardGui::positionCallback, this);
+  doll_sub_ = nh_->subscribe("/automobile/detection/doll", 1, &DashboardGui::dollCallback, this);
+  car_sub_ = nh_->subscribe("/automobile/detection/car", 1, &DashboardGui::carCallback, this);
   //localization_sub_ = nh_->subscribe("/automobile/vehicles", 1, &DashboardGui::localizationCallback, this);
 
 

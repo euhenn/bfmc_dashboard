@@ -199,6 +199,13 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Detection</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -276,6 +283,38 @@
            </item>
            <item>
             <widget class="QLabel" name="localization_y">
+             <property name="text">
+              <string>---</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>dool</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="doll">
+             <property name="text">
+              <string>---</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>car</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="car">
              <property name="text">
               <string>---</string>
              </property>

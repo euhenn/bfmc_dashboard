@@ -39,9 +39,9 @@ public:
   void speedCallback(const std_msgs::Float32::ConstPtr& msg);
   void steerCallback(const std_msgs::Float32::ConstPtr& msg);
   void positionCallback(const std_msgs::Float32::ConstPtr& msg);
+  void dollCallback(const std_msgs::Float32::ConstPtr& msg);
+  void carCallback(const std_msgs::Float32::ConstPtr& msg);
   //void localizationCallback(const bfmc_dashboard::vehicles::ConstPtr& msg);
-
-
 
 
 public slots:
@@ -68,6 +68,8 @@ private:
   ros::Subscriber speed_sub_;
   ros::Subscriber steer_sub_;
   ros::Subscriber position_sub_;
+  ros::Subscriber car_sub_;
+  ros::Subscriber doll_sub_;
   //ros::Subscriber localization_sub_;
 
   image_transport::Subscriber image_sub;
