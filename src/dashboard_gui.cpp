@@ -413,10 +413,10 @@ void DashboardGui::on_mainbrainbutton_clicked()
 
     // IF CHECKED FOR RANDOM POSITION
     if (ui->checkBox->isChecked()) {
-      remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && cd src/smart && python3 main_brain.py --random";
+      remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && cd src/smart && python3 main_brain.py --random";
     }
     else {
-      remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && cd src/smart && python3 main_brain.py";
+      remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && cd src/smart && python3 main_brain.py";
     }
 
     // Construct the SSH command and arguments
@@ -459,7 +459,7 @@ void DashboardGui::on_mainbrainbutton_clicked()
     });
 
     //uncheck this dude
-    ui->checkBox->setChecked(false);
+    //ui->checkBox->setChecked(false);
 
     // Start the SSH process
     sshProcess->start(ssh_command, arguments);
@@ -516,7 +516,7 @@ void DashboardGui::on_speeeedbutton_clicked()
     QString IP = ui->lineEdit->text();
 
     // Command to execute on the remote machine
-    QString remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && cd src/smart && python3 main_brain.py --speed";
+    QString remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && cd src/smart && python3 main_brain.py --speed";
 
     // Construct the SSH command and arguments
     arguments << "pi@" + IP << remote_command;
