@@ -6,6 +6,8 @@
 #include <QProcess>
 #include <qtimer.h>
 #include <cstdlib>
+#include <QDateTime>
+
 
 #include <ros/ros.h>
 #include <std_msgs/String.h>
@@ -62,6 +64,8 @@ private slots:
   void on_mainbrainbutton_clicked();
   void on_speeeedbutton_clicked();
 
+
+  void on_pushButton_clicked();
 
 private:
   Ui::DashboardGui *ui;
