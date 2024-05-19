@@ -7,6 +7,7 @@
 #include <qtimer.h>
 #include <cstdlib>
 #include <QDateTime>
+#include <QListWidgetItem>
 
 
 #include <ros/ros.h>
@@ -47,6 +48,8 @@ public:
   void carCallback(const std_msgs::Float32::ConstPtr& msg);
   void closestnodeCallback(const std_msgs::Float32::ConstPtr& msg);
   void nexteventCallback(const std_msgs::String::ConstPtr& msg);
+  void currentstateCallback(const std_msgs::String::ConstPtr& msg);
+
   //void localizationCallback(const bfmc_dashboard::vehicles::ConstPtr& msg);
 
 
@@ -67,6 +70,8 @@ private slots:
 
   void on_pushButton_clicked();
 
+  void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
+
 private:
   Ui::DashboardGui *ui;
   QTimer *ros_timer;
@@ -82,6 +87,7 @@ private:
   ros::Subscriber doll_sub_;
   ros::Subscriber nextevent_sub_;
   ros::Subscriber closestnode_sub_;
+  ros::Subscriber currentstate_sub_;
 
   //ros::Subscriber localization_sub_;
 

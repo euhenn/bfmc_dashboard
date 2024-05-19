@@ -87,6 +87,14 @@ void DashboardGui::nexteventCallback(const std_msgs::String::ConstPtr& msg)
   ui->nextevent->setText(qstring_msg);
 }
 
+void DashboardGui::currentstateCallback(const std_msgs::String::ConstPtr& msg)
+{
+  auto qstring_msg = QString::fromStdString( msg->data.c_str() );
+  ui->currentstate->setText(qstring_msg);
+}
+
+
+
 /*
 void DashboardGui::localizationCallback(const bfmc_dashboard::vehicles::ConstPtr& msg)
 {
@@ -292,6 +300,7 @@ void DashboardGui::on_resetROS_clicked()
   position_sub_.shutdown();
   closestnode_sub_.shutdown();
   nextevent_sub_.shutdown();
+  currentstate_sub_.shutdown();
 
   image_sub.shutdown();
 
@@ -354,6 +363,7 @@ void DashboardGui::initializeROS()
   //localization_sub_ = nh_->subscribe("/automobile/vehicles", 1, &DashboardGui::localizationCallback, this);
   closestnode_sub_ = nh_->subscribe("/automobile/closest_node", 1, &DashboardGui::closestnodeCallback, this);
   nextevent_sub_= nh_->subscribe("/automobile/next_event", 1, &DashboardGui::nexteventCallback, this);
+  currentstate_sub_ = nh_->subscribe("/automobile/current_state", 1, &DashboardGui::currentstateCallback, this);
 
 
   //image_sub = it.subscribe("/automobile/camera_image", 1, &DashboardGui::updateImage, this);
@@ -422,12 +432,13 @@ void DashboardGui::on_mainbrainbutton_clicked()
     // Construct the SSH command and arguments
     arguments << "pi@" + IP << remote_command;
 
-    qDebug() << "SSH Command Arguments:" << arguments;
+
 
     if (ui->checkBoxmind->isChecked()) {
       // Get the flag from the custom button
       CustomButton *startButton = qobject_cast<CustomButton *>(ui->mainbrainbutton);
       if (startButton) {
+        qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx";
         QString flag = startButton->getFlag();
         if (!flag.isEmpty()) {
           arguments.last().append(" " + flag);  // Append flag to the command
@@ -435,7 +446,7 @@ void DashboardGui::on_mainbrainbutton_clicked()
       }
     }
 
-
+    qDebug() << "SSH Command Arguments:" << arguments;
 
     // Create a new QProcess to run the SSH command
     QProcess *sshProcess = new QProcess(this);
@@ -552,7 +563,7 @@ void DashboardGui::on_pushButton_clicked()
   if (ui->pushButton->styleSheet() == "background-color: green;") {
     // If the button is green, change it to grey and send SIGINT signal to kill the process
     ui->pushButton->setStyleSheet(""); // Clears the style sheet, default color grey
-    ui->pushButton->setText("Main 🧠");
+    ui->pushButton->setText("Main 🧠 with args");
 
     QString ssh_command = "ssh";
     QStringList arguments;
@@ -593,19 +604,29 @@ void DashboardGui::on_pushButton_clicked()
     QString ssh_command = "ssh";
     QStringList arguments;
     QString IP = ui->lineEdit->text();
-    QString EVENT = ui->lineEdit_3->text();
+    //QString EVENT = ui->lineEdit_3->text();
+
+    QListWidgetItem *currentItem = ui->listWidget->currentItem();
+    QString EVENT;
+
+    if (currentItem) {
+        // Get the text of the currently selected item
+        EVENT = currentItem->text();
+        qDebug() << "EVENT:" << EVENT;
+    } else {
+        EVENT = "";
+    }
+
     QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss");
-
-
 
     QString remote_command;
 
     // IF CHECKED FOR RANDOM POSITION
     if (ui->checkBox->isChecked()) {
-      remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && cd src/smart && python3 main_brain.py --random " + EVENT + " > /home/pi/Desktop/log"+timestamp+".txt";
+      remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && cd src/smart && python3 main_brain.py --random " + EVENT + " > /home/pi/Desktop/car_logs/log"+timestamp+".txt";
     }
     else {
-      remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && cd src/smart && python3 main_brain.py "+" > /home/pi/Desktop/log"+timestamp+".txt";
+      remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && cd src/smart && python3 main_brain.py "+" > /home/pi/Desktop/car_logs/log"+timestamp+".txt";
     }
 
     // Construct the SSH command and arguments
@@ -615,9 +636,9 @@ void DashboardGui::on_pushButton_clicked()
 
     if (ui->checkBoxmind->isChecked()) {
       // Get the flag from the custom button
-      CustomButton *startButton = qobject_cast<CustomButton *>(ui->pushButton);
-      if (startButton) {
-        QString flag = startButton->getFlag();
+      CustomButton *startButtonFFF = qobject_cast<CustomButton *>(ui->pushButton);
+      if (startButtonFFF) {
+        QString flag = startButtonFFF->getFlag();
         if (!flag.isEmpty()) {
           arguments.last().append(" " + flag);  // Append flag to the command
         }
@@ -635,7 +656,7 @@ void DashboardGui::on_pushButton_clicked()
         qDebug() << "SSH command executed successfully.";
       } else {
         qDebug() << "Error executing SSH command. Exit code:" << exitCode << "Exit status:" << exitStatus;
-        ui->mainbrainbutton->setStyleSheet("background-color: red;");
+        ui->pushButton->setStyleSheet("background-color: red;");
         //check this dude back if error
         //ui->checkBox->setChecked(true);
       }
@@ -653,4 +674,9 @@ void DashboardGui::on_pushButton_clicked()
     // Start the SSH process
     sshProcess->start(ssh_command, arguments);
   }
+}
+
+void DashboardGui::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
+{
+    ui->listWidget->editItem(item);
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>503</width>
-    <height>436</height>
+    <width>643</width>
+    <height>520</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -82,13 +82,13 @@
         <widget class="QLabel" name="value_lbl">
          <property name="minimumSize">
           <size>
-           <width>50</width>
+           <width>120</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>100</width>
+           <width>180</width>
            <height>16777215</height>
           </size>
          </property>
@@ -186,6 +186,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>Current state</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="speed_lbl">
            <property name="text">
             <string>Speed</string>
@@ -232,6 +239,12 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>---                </string>
            </property>
@@ -253,15 +266,21 @@
          </item>
          <item>
           <widget class="QLabel" name="nextevent">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>130</width>
+             <width>0</width>
              <height>0</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <pointsize>9</pointsize>
+             <pointsize>10</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -273,6 +292,20 @@
          </item>
          <item>
           <widget class="QLabel" name="closenode">
+           <property name="text">
+            <string>---</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="currentstate">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string>---</string>
            </property>
@@ -647,29 +680,6 @@
           </layout>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_3">
-           <property name="font">
-            <font>
-             <pointsize>9</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>--event ROUNDABOUT_EXIT_DOWN </string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_10">
-           <item>
-            <widget class="CustomButton" name="pushButton">
-             <property name="text">
-              <string>test</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
           <widget class="CustomButton" name="mainbrainbutton">
            <property name="minimumSize">
             <size>
@@ -732,6 +742,111 @@
             <string>SPEEEEED!</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <widget class="Line" name="line_4">
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
+           <property name="lineWidth">
+            <number>2</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <widget class="QListWidget" name="listWidget">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QAbstractScrollArea::AdjustIgnored</enum>
+             </property>
+             <property name="editTriggers">
+              <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+             </property>
+             <item>
+              <property name="text">
+               <string>--event ROUNDABOUT_EXIT_DOWN </string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>--event ROUNDABOUT_EXIT_DOWN </string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>--event ROUNDABOUT_EXIT_DOWN </string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>--event ROUNDABOUT_EXIT_DOWN </string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>--event </string>
+              </property>
+              <property name="flags">
+               <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>--event </string>
+              </property>
+              <property name="flags">
+               <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Main 🧠 with args</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
