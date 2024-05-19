@@ -623,28 +623,29 @@ void DashboardGui::on_pushButton_clicked()
 
     // IF CHECKED FOR RANDOM POSITION
     if (ui->checkBox->isChecked()) {
-      remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && cd src/smart && python3 main_brain.py --random " + EVENT + " > /home/pi/Desktop/car_logs/log"+timestamp+".txt";
+        remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP=" + IP + " && export ROS_HOSTNAME=" + IP + " && cd src/smart && python3 main_brain.py --random " + EVENT;
+    } else {
+        remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP=" + IP + " && export ROS_HOSTNAME=" + IP + " && cd src/smart && python3 main_brain.py " + EVENT;
     }
-    else {
-      remote_command = "cd ~/bfmc2024/ws_2024 && source devel/setup.bash && export ROS_MASTER_URI='http://" + IP + ":11311' && export ROS_IP="+IP+" && export ROS_HOSTNAME="+IP+" && cd src/smart && python3 main_brain.py "+" > /home/pi/Desktop/car_logs/log"+timestamp+".txt";
+
+    if (ui->checkBoxmind->isChecked()) {
+        // Get the flag from the custom button
+        CustomButton *startButtonFFF = qobject_cast<CustomButton *>(ui->pushButton);
+        if (startButtonFFF) {
+            QString flag = startButtonFFF->getFlag();
+            if (!flag.isEmpty()) {
+                remote_command.append(" " + flag);  // Append flag to the command
+            }
+        }
     }
+
+    // Append the log redirection part
+    remote_command.append(" > /home/pi/Desktop/car_logs/log" + timestamp + ".txt");
 
     // Construct the SSH command and arguments
     arguments << "pi@" + IP << remote_command;
 
     qDebug() << "SSH Command Arguments:" << arguments;
-
-    if (ui->checkBoxmind->isChecked()) {
-      // Get the flag from the custom button
-      CustomButton *startButtonFFF = qobject_cast<CustomButton *>(ui->pushButton);
-      if (startButtonFFF) {
-        QString flag = startButtonFFF->getFlag();
-        if (!flag.isEmpty()) {
-          arguments.last().append(" " + flag);  // Append flag to the command
-        }
-      }
-    }
-
 
 
     // Create a new QProcess to run the SSH command
@@ -678,5 +679,5 @@ void DashboardGui::on_pushButton_clicked()
 
 void DashboardGui::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
-    ui->listWidget->editItem(item);
+  ui->listWidget->editItem(item);
 }

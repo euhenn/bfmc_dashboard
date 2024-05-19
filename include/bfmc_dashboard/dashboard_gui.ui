@@ -791,7 +791,7 @@
              </property>
              <item>
               <property name="text">
-               <string>--event ROUNDABOUT_EXIT_DOWN </string>
+               <string>--event PARKING</string>
               </property>
              </item>
              <item>
@@ -801,12 +801,12 @@
              </item>
              <item>
               <property name="text">
-               <string>--event ROUNDABOUT_EXIT_DOWN </string>
+               <string>--event</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>--event ROUNDABOUT_EXIT_DOWN </string>
+               <string>--event</string>
               </property>
              </item>
              <item>
@@ -828,7 +828,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="CustomButton" name="pushButton">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                <horstretch>0</horstretch>
