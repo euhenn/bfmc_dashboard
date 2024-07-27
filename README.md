@@ -1,5 +1,7 @@
 # bfmc_dashboard
 
+## README to be updated !!
+
 ## 1. Setting up ROS workspace
 ### 1.a Create the ros workspace if you don t have it already, and build
 ```bash
